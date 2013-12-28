@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+     >
+    
+    <!-- <com.google.android.maps.MapView
+    android:id="@+id/mapView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:apiKey="@string/mapsAPIKey"  
+    android:clickable="true"
+    android:enabled="true" /> -->
+
+    <ToggleButton
+        android:id="@+id/onOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:enabled="true"
+        android:minHeight="36dip"
+        android:minWidth="64dip"
+        android:text="Toggle"
+        tools:ignore="HardcodedText" />
+
+    <ListView
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addButton"
+        android:layout_alignLeft="@+id/addButton"
+        android:layout_alignRight="@+id/deleteButton"
+        android:layout_below="@+id/onOff"
+        android:layout_marginTop="100dp"
+        android:divider="@drawable/divider"
+        android:paddingLeft="50dip"
+        android:paddingRight="50dip" >
+
+    </ListView>
+
+    <ImageButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/onOff"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/add_buttons"
+        android:contentDescription="Add"
+        android:paddingBottom="5dp"
+        android:visibility="visible"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:contentDescription="Edit"
+        android:paddingBottom="5dp"
+        android:visibility="invisible"
+        tools:ignore="HardcodedText,HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/delete_buttons"
+        android:contentDescription="Delete"
+        android:paddingBottom="5dp"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/onOff"
+        android:layout_marginTop="82dp"
+        android:layout_toRightOf="@+id/addButton"
+        android:src="@drawable/name" 
+        android:contentDescription="@null"/> 
+
+</RelativeLayout>
