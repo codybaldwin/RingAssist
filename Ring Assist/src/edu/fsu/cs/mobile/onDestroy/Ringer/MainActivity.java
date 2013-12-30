@@ -205,8 +205,9 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             notification = new Notification(R.drawable.ic_launcher,
                     "Ring Assist", System.currentTimeMillis());
             notification.flags |= Notification.FLAG_NO_CLEAR;
-           Intent intent = new Intent();
-           // Intent intent = new Intent(this, MainActivity.class);
+           //Intent intent = new Intent();
+            //go to app when notification is touched
+            Intent intent = new Intent(this, MainActivity.class);
             PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0); 
             notification.setLatestEventInfo(this, "Ring Assist",
                     "Adjusting Ringer For You", activity);

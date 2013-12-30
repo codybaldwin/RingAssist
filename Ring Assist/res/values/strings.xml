@@ -3,7 +3,7 @@
     <string name="app_name">Ring Assist</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Ring Assist Lite</string>
+    <string name="title_activity_main">Ring Assist</string>
     <string name="read_permission">edu.fsu.cs.mobile.onDestroy.Ringer.provider.permission.READ_PERMISSION</string> 
     <string name="write_permission">edu.fsu.cs.mobile.onDestroy.Ringer.provider.permission.WRITE_PERMISSION</string> 
     <string name="authority">edu.fsu.cs.mobile.onDestroy.Ringer.provider</string>
