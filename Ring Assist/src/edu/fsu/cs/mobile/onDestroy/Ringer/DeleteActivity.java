@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import edu.fsu.cs.mobile.onDestroy.Ringer.R;
 
 //will change this from ListActivity to instead use a list view from delete.xml
 public class DeleteActivity extends ListActivity

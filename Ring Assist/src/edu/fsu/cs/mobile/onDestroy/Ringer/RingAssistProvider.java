@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
-import edu.fsu.cs.mobile.onDestroy.Ringer.R;
 
 //class used to store the user desired locations and other relevant data
 public class RingAssistProvider extends ContentProvider

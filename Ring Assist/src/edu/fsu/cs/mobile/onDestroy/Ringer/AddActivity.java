@@ -57,11 +57,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         //here initially finds the location of the user but does not actually set any variables
         //used in the content provider until button is clicked
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);  //new
         Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        Log.i("Got to if", " ");
-
         if(location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
         {
             latitude = location.getLatitude();
@@ -72,29 +68,10 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         }
         else
         {
-            Log.i("went to", " else");
-
             //calls function below if last known location is null
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-            if(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)==null)
-            {
-                Log.i("went into", " else if");
-
-                mAddToProvider.setEnabled(false);   //new, set button as disabled when can't get location
-
-                Toast.makeText(getApplicationContext(),"Cannot get location, please try again",
-                        Toast.LENGTH_SHORT).show();
-
-                //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this); new
-            }
-            else
-            {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-
-                Log.i("longitude is "," " + longitude);
-                Log.i("latitude is ", " " + latitude);
-            }
+        	 mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        	 if(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)==null)
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
         //sets the longitude and latitude to whatever is most current

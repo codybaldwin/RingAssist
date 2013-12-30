@@ -1,7 +1,5 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
-import java.util.Calendar;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,22 +28,19 @@ import android.widget.Toast;
 public class CallAndSmsReceiver extends BroadcastReceiver
 {
     //  arbitrarily setting radius until able to get it from activity or decided upon by group
-    final static double RADIUSINFEET = 25;
+    final static double RADIUSINFEET = 200;
     final static double RADIUS = RADIUSINFEET / (60 * 5280 * 1.15); //  in degrees latitude/longitude
     final static int RING_CHANGED_NOTIFICATION_ID = 10;
     public final static String PREFS_NAME = "TogglePrefFile";
     public boolean sent = false;
     Cursor cursor;
-    LocationManager lManager;
-    static double longitude;
-    static double latitude;
 
     @Override
     public void onReceive(final Context context, Intent intent)
     {
         Log.i("just got inside ", " onReceive()");
 
-        // Toast.makeText(context, "entered on receive", Toast.LENGTH_LONG).show();
+       // Toast.makeText(context, "entered on receive", Toast.LENGTH_LONG).show();
 
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
         boolean toggleSetting = settings.getBoolean("toggleValue", false);
@@ -54,7 +49,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
         if (toggleSetting)
         {
             //  getting user's location
-            lManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             LocationListener lListener = new LocationListener()
             {
                 //@Override
@@ -74,59 +69,20 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             //  checking location based on network first, then GPS if network doesn't work
-            /*lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, lListener);
+            lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, lListener);
             Location userLocation = lManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (userLocation == null)
             {
-                lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, lListener);
-                userLocation = lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }*/
-
-            //all new below here
-            lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, lListener);
-            Location userLocation = lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(userLocation != null && userLocation.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
-            {
-                latitude = userLocation.getLatitude();
-                longitude = userLocation.getLongitude();
-
-                Log.i("longitude is "," " + longitude);
-                Log.i("latitude is ", " " + latitude);
+            lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, lListener);
+            userLocation = lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
-            else
-            {
-                Log.i("went to", " else");
-
-                //calls function below if last known location is null
-                lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, lListener);
-                if(lManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)==null)
-                {
-                    Log.i("went into", " else if");
-
-                    //mAddToProvider.setEnabled(false);   //new, set button as disabled when can't get location
-
-                    Toast.makeText(context,"Cannot get location, please try again",
-                            Toast.LENGTH_SHORT).show();
-
-                    //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this); new
-                }
-                else
-                {
-                    latitude = userLocation.getLatitude();
-                    longitude = userLocation.getLongitude();
-
-                    Log.i("longitude is "," " + longitude);
-                    Log.i("latitude is ", " " + latitude);
-                }
-            }
-
             //  checking the database for a location that matches the user's location
 
             Log.i("longitude is ", " " +userLocation.getLongitude());
             Log.i("latitude is ", " " +userLocation.getLatitude());
 
-            //double longitude = userLocation.getLongitude();
-            //double latitude = userLocation.getLatitude();
+            double longitude = userLocation.getLongitude();
+            double latitude = userLocation.getLatitude();
 
             /*String[] projection = new String[]
                     {RingAssistProvider.COLUMN_PREFERENCE,
@@ -169,7 +125,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             {
                 Log.i("cursor is not", "NULL");
 
-                Toast.makeText(context, "Within radius - " + cursor.getString(1), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Within radius", Toast.LENGTH_LONG).show();
 
                 AudioManager aManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 Log.i("got past audioManager", " ");
@@ -196,34 +152,34 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     break;
                     case (2):   //  normal/default
                         //  does not change ringer volume or vibrate setting
-                        //	aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                        //  for (int i = 1; i <=4; i++)
-                        aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-
-                    break;
+                    //	aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                  //  for (int i = 1; i <=4; i++)
+                    	aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    
+                        break;
                     case (3):   //  louder
                         //  sets ringer volume louder without changing vibrate setting
-                        //	aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                        // for (int i = 1; i <=6; i++)
-                        aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    //	aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    	// for (int i = 1; i <=6; i++)
+                             aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    		aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    		aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    		aManager.setRingerMode(AudioManager.ADJUST_RAISE);
                     break;
                     case (4):   //  louder than 3 + vibrate
                         //  sets ringer volume louder twice and sets vibrate setting on
-
-                        // aManager.setRingerMode(AudioManager.VIBRATE_SETTING_ON);    //  depreciated
-
-                        //for (int i = 1; i <=8; i++)
+                    
+                   // aManager.setRingerMode(AudioManager.VIBRATE_SETTING_ON);    //  depreciated
+                    	
+                    	//for (int i = 1; i <=8; i++)
+                    	aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
                         aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
                     break;
                 }
 
@@ -234,40 +190,40 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     Log.i("inside ", "sendingSMS");
                     if (intent.getAction() == "android.provider.Telephony.SMS_RECEIVED")
                     {
-                        Bundle smsBundle = intent.getExtras();
-                        if (smsBundle != null)
-                        {
-                            Object[] pdus = (Object[]) smsBundle.get("pdus");
-                            final SmsMessage[] messages = new SmsMessage[pdus.length];
-                            for (int i = 0; i < pdus.length; i++)
-                                messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                            String smsSenderNumber = messages[0].getOriginatingAddress();
-                            SmsManager sManager = SmsManager.getDefault();
-                            sManager.sendTextMessage(smsSenderNumber, null, smsMessage, null, null);
-                            sent=true;
-                            //test
-                            NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-                            Notification ringerChangedNotification = new Notification(R.drawable.ic_launcher,
-                                    "Ring Assist",
-                                    System.currentTimeMillis());
-                            Intent notificationIntent = new Intent(context, MainActivity.class);
-                            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-
-                            ringerChangedNotification.setLatestEventInfo(context, "Ring Assist",
-                                    "Automated message sent!", contentIntent);
-                            ringerChangedNotification.flags = Notification.FLAG_AUTO_CANCEL;
-                            nManager.notify(RING_CHANGED_NOTIFICATION_ID, ringerChangedNotification);
-                            //end-test
-
-                        }
+                    	Bundle smsBundle = intent.getExtras();
+                    	if (smsBundle != null)
+                    	{
+                    		Object[] pdus = (Object[]) smsBundle.get("pdus");
+                    		final SmsMessage[] messages = new SmsMessage[pdus.length];
+                    		for (int i = 0; i < pdus.length; i++)
+                    			messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                    		String smsSenderNumber = messages[0].getOriginatingAddress();
+                    		SmsManager sManager = SmsManager.getDefault();
+                    		sManager.sendTextMessage(smsSenderNumber, null, smsMessage, null, null);
+                    		sent=true;
+                    		//test
+                    		   NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                               Notification ringerChangedNotification = new Notification(R.drawable.ic_launcher,
+                                       "Ring Assist",
+                                       System.currentTimeMillis());
+                               Intent notificationIntent = new Intent(context, MainActivity.class);
+                               PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+                            
+                               	ringerChangedNotification.setLatestEventInfo(context, "Ring Assist",
+                                       "Automated message sent!", contentIntent);
+                               ringerChangedNotification.flags = Notification.FLAG_AUTO_CANCEL;
+                               nManager.notify(RING_CHANGED_NOTIFICATION_ID, ringerChangedNotification);
+                               //end-test
+                               	
+                    }
 
                     }
                     TelephonyManager tManager = (TelephonyManager)context.getSystemService(context.TELEPHONY_SERVICE);
                     if (tManager.getCallState() == TelephonyManager.CALL_STATE_RINGING)
                     {
-                        //Log.i("stopped ringing", "call state is idle");
-
-                        //  getting phone number from incoming call
+                    	//Log.i("stopped ringing", "call state is idle");
+                    	
+                    //  getting phone number from incoming call
                         //  needs a delay because call log is not updated immediately when call is received
                         //  so we delay half a second (aka 500 milliseconds)
                         Handler handler = new Handler();
@@ -299,31 +255,31 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                         }, 500);
                         Toast.makeText(context, "Sent automated message.\n" + smsMessage,
                                 Toast.LENGTH_LONG).show();
-                        //test
-                        NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                      //test
+             		   NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
                         Notification ringerChangedNotification = new Notification(R.drawable.ic_launcher,
                                 "Ring Assist",
                                 System.currentTimeMillis());
                         Intent notificationIntent = new Intent(context, MainActivity.class);
                         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-
-                        ringerChangedNotification.setLatestEventInfo(context, "Ring Assist",
+                     
+                        	ringerChangedNotification.setLatestEventInfo(context, "Ring Assist",
                                 "Automated message sent!", contentIntent);
                         ringerChangedNotification.flags = Notification.FLAG_AUTO_CANCEL;
                         nManager.notify(RING_CHANGED_NOTIFICATION_ID, ringerChangedNotification);
                         //end-test
-
+                        
                     }
-
+                    
                     /*a
-
-                     */
+                    
+                    */
                 }
 
                 Log.i("got into ", "notifications");
 
                 //  pushing a notification if the ringer/vibrate settings are changed
-                /*   NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+             /*   NotificationManager nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification ringerChangedNotification = new Notification(R.drawable.ic_launcher,
                         "Ring Assist",
                         System.currentTimeMillis());
@@ -336,13 +292,13 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                 ringerChangedNotification.flags = Notification.FLAG_AUTO_CANCEL;
                 nManager.notify(RING_CHANGED_NOTIFICATION_ID, ringerChangedNotification);
                 	}*/
-                /* else
+               /* else 
                 {
                 	ringerChangedNotification.setLatestEventInfo(context, "Ring Assist",
                             "The ringer settings have been altered.", contentIntent);
                     ringerChangedNotification.flags = Notification.FLAG_AUTO_CANCEL;
                 }*/
-
+                
             }
             else
                 Toast.makeText(context, "Not within radius", Toast.LENGTH_LONG).show();

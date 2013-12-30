@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,7 +41,120 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     public static final String PREFS_NAME = "TogglePrefFile";      //used for toggle button shared preferences
     SharedPreferences settings;
     boolean toggleSetting;
-    LocationManager mLocationManager;   //new, for use when checking on button
+
+    //here trying to do the map view stuff (for premium)
+    /*MapView map;
+    MapController mc;
+    LocationManager lm;
+    GeoPoint geoPoint;
+    Drawable marker;*/
+
+    /*class MyOverlay extends ItemizedOverlay<OverlayItem>
+    {
+        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+
+        public MyOverlay(Drawable drawable)
+        {
+            super(drawable);
+
+            boundCenterBottom(drawable);
+
+            //get's the entire UserInformation table into the cursor
+            mCursor = getContentResolver().query(RingAssistProvider.CONTENT_URI,
+                    null, null, null, null);
+
+            //if the cursor isn't empty, then populate listView from database
+            if(mCursor != null)
+            {
+                if(mCursor.getCount() > 0)
+                {
+                    //mCursor.moveToNext();
+
+                    while (mCursor.moveToNext())
+                    {
+                        String modePreference = mCursor.getString(5).trim();
+
+                        if ("0".equals(modePreference))
+                            modePreference = "Silent";
+                        else if ("1".equals(modePreference))
+                            modePreference = "Vibrate";
+                        else if ("2".equals(modePreference))
+                            modePreference = "Normal";
+                        else if ("3".equals(modePreference))
+                            modePreference = "Loud";
+                        else if ("4".equals(modePreference))
+                            modePreference = "Loudest";
+
+                        //listItems.add(mCursor.getString(1));    //right now only outputs the name
+
+                        items.add(new OverlayItem(new GeoPoint((int) (mCursor.getInt(3) * 1E6),
+                                (int) (mCursor.getInt(2) * 1E6)),
+                                mCursor.getString(1), modePreference));
+                    }
+                }
+
+                //items.add(new OverlayItem(geoPoint, "Hello", "Welcome to the Mobile Lab!"));
+                //items.add(new OverlayItem(new GeoPoint((int) (30.446172 * 1E6),
+                        //(int) (-84.299466 * 1E6)),
+                        //"You're late", "You're late, Class starts at 2PM!"));
+
+                populate();
+            }
+        }
+
+        @Override
+        protected OverlayItem createItem(int index)
+        {
+            return items.get(index);
+        }
+
+        @Override
+        protected boolean onTap(int i)
+        {
+            Toast.makeText(MainActivity.this,
+                    items.get(i).getSnippet(),
+                    Toast.LENGTH_SHORT).show();
+            return(true);
+        }
+
+        @Override
+        public int size()
+        {
+            return items.size();
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //map = (MapView) findViewById(R.id.mapView);
+        //mc = map.getController();
+
+
+
+        map.setBuiltInZoomControls(true);
+
+        geoPoint = new GeoPoint((int) (30.446142 * 1E6), (int) (-84.299673 * 1E6));
+        mc.setCenter(geoPoint);
+
+        marker = getResources().getDrawable(R.drawable.ic_launcher);
+        marker.setBounds(105, 105, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
+
+        mc.setZoom(17);
+
+        map.getOverlays().add(new MyOverlay(marker));
+    }
+
+    @Override
+    protected boolean isRouteDisplayed()
+    {
+        return false;
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -74,7 +186,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                 myIntent.putExtra("tupleName", (((TextView) view).getText()));     //plus two b/c unreachable tuples at 0 and 1 indexes
                 startActivity(myIntent);
 
-                /*  Toast.makeText(getApplicationContext(),     //simply for error checking
+              /*  Toast.makeText(getApplicationContext(),     //simply for error checking
                         ((TextView) view).getText(),
                         Toast.LENGTH_SHORT).show(); */
             }
@@ -93,14 +205,14 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             notification = new Notification(R.drawable.ic_launcher,
                     "Ring Assist", System.currentTimeMillis());
             notification.flags |= Notification.FLAG_NO_CLEAR;
-            Intent intent = new Intent();
-            // Intent intent = new Intent(this, MainActivity.class);
-            PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
+           Intent intent = new Intent();
+           // Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0); 
             notification.setLatestEventInfo(this, "Ring Assist",
                     "Adjusting Ringer For You", activity);
             notification.number += 1;
             notificationManager.notify(0, notification);
-
+        
         }
         else
             mOnOff.setChecked(false);
@@ -194,31 +306,18 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             //if after clicking the toggle is on...
             if (mOnOff.isChecked() == true)
             {
-                //check whether gps on or off on phone hardware (all new in this block)
-                mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                boolean statusOfGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (statusOfGPS)
-                {
-                    //send an appropriate notification
-                    notificationManager = (NotificationManager)
-                            getSystemService(NOTIFICATION_SERVICE);
-                    notification = new Notification(R.drawable.ic_launcher,
-                            "Ring Assist", System.currentTimeMillis());
-                    notification.flags |= Notification.FLAG_NO_CLEAR;
-                    Intent intent = new Intent();
-                    PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
-                    notification.setLatestEventInfo(this, "Ring Assist",
-                            "Adjusting Ringer For You", activity);
-                    notification.number += 1;
-                    notificationManager.notify(0, notification);
-                }
-                else
-                {
-                    mOnOff.setChecked(false);
-                    Toast.makeText(getApplicationContext(),
-                            "Oops GPS Is Disabled!",
-                            Toast.LENGTH_SHORT).show();
-                }
+                //send an appropriate notification
+                notificationManager = (NotificationManager)
+                        getSystemService(NOTIFICATION_SERVICE);
+                notification = new Notification(R.drawable.ic_launcher,
+                        "Ring Assist", System.currentTimeMillis());
+                notification.flags |= Notification.FLAG_NO_CLEAR;
+                Intent intent = new Intent();
+                PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
+                notification.setLatestEventInfo(this, "Ring Assist",
+                        "Adjusting Ringer For You", activity);
+                notification.number += 1;
+                notificationManager.notify(0, notification);
             }
             //otherwise if after click it is off...
             else
