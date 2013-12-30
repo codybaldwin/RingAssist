@@ -28,6 +28,7 @@ import android.widget.ToggleButton;
 public class MainActivity extends Activity implements OnClickListener   //did extend Activity
 {
     //variables used with activity_main.xml
+	long time=0;
     ImageButton mAddButton;
     ImageButton mEditButton;
     ImageButton mDeleteButton;
@@ -156,6 +157,28 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         return false;
     }*/
 
+    public void onBackPressed()
+    {
+		if(System.currentTimeMillis()-time<=4000)
+		{
+			moveTaskToBack(true);
+			
+			/*Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); */
+            
+
+        }
+        else
+        {
+        	time=System.currentTimeMillis();
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+        }
+        
+    } 
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -174,6 +197,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         mEditButton.setOnClickListener(this);
         mDeleteButton.setOnClickListener(this);
         mOnOff.setOnClickListener(this);
+        
 
         //will fire off edit activity when a list item is clicked (anonymous listener)
         mMainView.setOnItemClickListener(new OnItemClickListener()
@@ -185,6 +209,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                 Intent myIntent = new Intent(MainActivity.this, EditActivity.class);
                 myIntent.putExtra("tupleName", (((TextView) view).getText()));     //plus two b/c unreachable tuples at 0 and 1 indexes
                 startActivity(myIntent);
+                //finish();
 
               /*  Toast.makeText(getApplicationContext(),     //simply for error checking
                         ((TextView) view).getText(),
@@ -259,8 +284,10 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         }
     }
 
+    
     //overriding simply for the shared preferences to be able to store just in case (not sure if
     //need this since also save the shared preferences every time they change it)
+    
     @Override
     protected void onStop()
     {
@@ -290,6 +317,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             //launches the AddActivity
             Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
             startActivity(myIntent);
+            //finish();
         }
 
         //handles when the delete button is clicked from activity_main.xml
@@ -297,6 +325,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         {
             Intent myIntent = new Intent(MainActivity.this, DeleteActivity.class);
             startActivity(myIntent);
+           // finish();
         }
 
         //handles when the toggle button is clicked (eventually would enable or disable

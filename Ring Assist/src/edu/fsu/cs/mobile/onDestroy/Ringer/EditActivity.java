@@ -212,6 +212,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
             //only here at top for testing, will eventually be at bottom
             Intent myIntent = new Intent(EditActivity.this, MainActivity.class);
             startActivity(myIntent);
+            finish();
         }
     }
 

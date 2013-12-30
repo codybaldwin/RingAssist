@@ -35,6 +35,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
     static double providerLatitude;
     static double providerLongitude;
     LocationManager mLocationManager;
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -141,6 +142,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
             //launches the MainActivity when insert is complete
             Intent myIntent = new Intent(AddActivity.this, MainActivity.class);
             startActivity(myIntent);
+            finish();
         }
     }
 

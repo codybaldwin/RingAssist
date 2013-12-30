@@ -80,5 +80,6 @@ public class DeleteActivity extends ListActivity
         //launches the main activity again
         Intent myIntent = new Intent(DeleteActivity.this, MainActivity.class);
         startActivity(myIntent);
+        finish();
     }
 }
