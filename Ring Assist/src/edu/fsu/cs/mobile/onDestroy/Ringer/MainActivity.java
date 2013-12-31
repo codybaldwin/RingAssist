@@ -1,5 +1,6 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -13,8 +14,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -179,10 +183,25 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         
     } 
     
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        //force actionBar Menu overflow
+
+    	     try {
+    	        ViewConfiguration config = ViewConfiguration.get(this);
+    	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+    	        if(menuKeyField != null) {
+    	            menuKeyField.setAccessible(true);
+    	            menuKeyField.setBoolean(config, false);
+    	        }
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	    }
+    	
+    	
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);         //inflate the main UI (activity_main.xml)
 
         //get id's used with activity_main.xml
@@ -208,8 +227,11 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                 //launches EditActivity and ads tuple position as an extra (for provider to use)
                 Intent myIntent = new Intent(MainActivity.this, EditActivity.class);
                 myIntent.putExtra("tupleName", (((TextView) view).getText()));     //plus two b/c unreachable tuples at 0 and 1 indexes
-                startActivity(myIntent);
-                //finish();
+                
+                startActivityForResult(myIntent, 500);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                //startActivity(myIntent);
+               
 
               /*  Toast.makeText(getApplicationContext(),     //simply for error checking
                         ((TextView) view).getText(),
@@ -304,8 +326,29 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
+    	  MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.actionbar_menu, menu);
+    	return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_add:
+            	Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
+                startActivityForResult(myIntent, 500);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            case R.id.action_discard:
+            	Intent myIntent2 = new Intent(MainActivity.this, DeleteActivity.class);
+                startActivityForResult(myIntent2, 500);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //handles what happens when add,edit,or delete buttons clicked
@@ -316,16 +359,22 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         {
             //launches the AddActivity
             Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
-            startActivity(myIntent);
-            //finish();
+            startActivityForResult(myIntent, 500);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+           // startActivity(myIntent);
+           
         }
 
         //handles when the delete button is clicked from activity_main.xml
         if (v == mDeleteButton)
         {
             Intent myIntent = new Intent(MainActivity.this, DeleteActivity.class);
-            startActivity(myIntent);
-           // finish();
+            
+            startActivityForResult(myIntent, 500);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            //startActivity(myIntent);
+           
         }
 
         //handles when the toggle button is clicked (eventually would enable or disable

@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,6 +19,31 @@ public class DeleteActivity extends ListActivity
     ArrayAdapter<String> adapter;
     Cursor mCursor;
 
+    
+    //animates the activity changes when back button is pressed OR when the "up" button is pressed
+    @Override
+    public void onBackPressed()
+    {
+    	Intent myIntent = new Intent(DeleteActivity.this, MainActivity.class);
+    	startActivityForResult(myIntent, 500);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+            	Intent myIntent = new Intent(DeleteActivity.this, MainActivity.class);
+            	startActivityForResult(myIntent, 500);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+    
+    //
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -79,7 +105,8 @@ public class DeleteActivity extends ListActivity
 
         //launches the main activity again
         Intent myIntent = new Intent(DeleteActivity.this, MainActivity.class);
-        startActivity(myIntent);
+        startActivityForResult(myIntent, 500);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
     }
 }

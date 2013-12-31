@@ -2,6 +2,7 @@ package edu.fsu.cs.mobile.onDestroy.Ringer;
 
 import java.util.Calendar;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -35,12 +37,36 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
     static double providerLatitude;
     static double providerLongitude;
     LocationManager mLocationManager;
-    
+  
+    //animates the activity changes when back button is pressed OR when the "up" button is pressed
+    @Override
+    public void onBackPressed()
+    {
+    	Intent myIntent = new Intent(AddActivity.this, MainActivity.class);
+    	startActivityForResult(myIntent, 500);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+            	Intent myIntent = new Intent(AddActivity.this, MainActivity.class);
+            	startActivityForResult(myIntent, 500);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+    
+    //
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+    	
+    	// getActionBar().setDisplayHomeAsUpEnabled(true);
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.add);
 
         //get id's of add.xml
@@ -141,7 +167,8 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
 
             //launches the MainActivity when insert is complete
             Intent myIntent = new Intent(AddActivity.this, MainActivity.class);
-            startActivity(myIntent);
+            startActivityForResult(myIntent, 500);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
         }
     }

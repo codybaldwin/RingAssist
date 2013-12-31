@@ -4,8 +4,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
     <permission android:name="edu.fsu.cs.mobile.onDestroy.Ringer.provider.permission.READ_PERMISSION"></permission>
     <permission android:name="edu.fsu.cs.mobile.onDestroy.Ringer.provider.permission.WRITE_PERMISSION"></permission>
     <uses-permission android:name="android.permission.READ_SMS"/>
@@ -45,11 +45,11 @@
             </intent-filter>
         </receiver>
         <activity android:name="AddActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" android:parentActivityName=".MainActivity"></activity>
         <activity android:name="DeleteActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" android:parentActivityName=".MainActivity"></activity>
         <activity android:name="EditActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

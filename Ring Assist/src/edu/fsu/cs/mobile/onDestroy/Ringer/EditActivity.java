@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -39,6 +40,30 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
     boolean sendTextBool = false;
     int sendTextNumber = 0;
 
+    //animates the activity changes when back button is pressed OR when the "up" button is pressed
+    @Override
+    public void onBackPressed()
+    {
+    	Intent myIntent = new Intent(EditActivity.this, MainActivity.class);
+    	startActivityForResult(myIntent, 500);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+            	Intent myIntent = new Intent(EditActivity.this, MainActivity.class);
+            	startActivityForResult(myIntent, 500);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+    
+    //
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -210,8 +235,11 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
             }
 
             //only here at top for testing, will eventually be at bottom
+           
             Intent myIntent = new Intent(EditActivity.this, MainActivity.class);
-            startActivity(myIntent);
+            //animates the activity changes when back button is pressed OR when the "up" button is pressed
+            startActivityForResult(myIntent, 500);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
         }
     }

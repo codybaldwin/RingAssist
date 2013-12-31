@@ -8,9 +8,19 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
 public final class R {
+    public static final class anim {
+        public static final int slide_in_bottom=0x7f040000;
+        public static final int slide_in_left=0x7f040001;
+        public static final int slide_in_right=0x7f040002;
+        public static final int slide_in_top=0x7f040003;
+        public static final int slide_out_bottom=0x7f040004;
+        public static final int slide_out_left=0x7f040005;
+        public static final int slide_out_right=0x7f040006;
+        public static final int slide_out_top=0x7f040007;
+    }
     public static final class array {
-        public static final int list=0x7f050001;
-        public static final int ring_mode_array=0x7f050000;
+        public static final int list=0x7f060001;
+        public static final int ring_mode_array=0x7f060000;
     }
     public static final class attr {
     }
@@ -33,48 +43,54 @@ public final class R {
         public static final int get_current=0x7f02000f;
         public static final int get_current_button=0x7f020010;
         public static final int get_current_rollover=0x7f020011;
-        public static final int ic_action_search=0x7f020012;
-        public static final int ic_launcher=0x7f020013;
-        public static final int list_bg=0x7f020014;
-        public static final int loc=0x7f020015;
-        public static final int main_bg=0x7f020016;
-        public static final int message=0x7f020017;
-        public static final int mode=0x7f020018;
-        public static final int name=0x7f020019;
-        public static final int radius=0x7f02001a;
-        public static final int send_msg=0x7f02001b;
-        public static final int time=0x7f02001c;
+        public static final int ic_action_discard=0x7f020012;
+        public static final int ic_action_location_found=0x7f020013;
+        public static final int ic_action_new=0x7f020014;
+        public static final int ic_action_search=0x7f020015;
+        public static final int ic_launcher=0x7f020016;
+        public static final int list_bg=0x7f020017;
+        public static final int loc=0x7f020018;
+        public static final int main_bg=0x7f020019;
+        public static final int message=0x7f02001a;
+        public static final int mode=0x7f02001b;
+        public static final int name=0x7f02001c;
+        public static final int radius=0x7f02001d;
+        public static final int send_msg=0x7f02001e;
+        public static final int time=0x7f02001f;
     }
     public static final class id {
-        public static final int addButton=0x7f080002;
-        public static final int addToProvider=0x7f080006;
-        public static final int deleteButton=0x7f080003;
-        public static final int editButton=0x7f080004;
-        public static final int editGetCurrent_button=0x7f080017;
-        public static final int editLocation=0x7f080015;
-        public static final int editMessage=0x7f08001a;
-        public static final int editMode=0x7f080019;
-        public static final int editName=0x7f080014;
-        public static final int editProvider=0x7f080013;
-        public static final int editRadius=0x7f080016;
-        public static final int editSendText=0x7f080018;
-        public static final int frameLayout1=0x7f08001b;
-        public static final int getCurrent_button=0x7f08000c;
-        public static final int imageView1=0x7f080005;
-        public static final int imageView2=0x7f080008;
-        public static final int imageView3=0x7f08000a;
-        public static final int imageView4=0x7f08000d;
-        public static final int imageView5=0x7f08000e;
-        public static final int imageView6=0x7f080010;
-        public static final int location=0x7f080009;
-        public static final int mainView=0x7f080001;
-        public static final int menu_settings=0x7f08001c;
-        public static final int message=0x7f080012;
-        public static final int mode=0x7f080011;
-        public static final int name=0x7f080007;
-        public static final int onOff=0x7f080000;
-        public static final int radius=0x7f08000b;
-        public static final int sendText=0x7f08000f;
+        public static final int action_add=0x7f09001c;
+        public static final int action_discard=0x7f09001d;
+        public static final int action_settings=0x7f09001e;
+        public static final int addButton=0x7f090002;
+        public static final int addToProvider=0x7f090006;
+        public static final int deleteButton=0x7f090003;
+        public static final int editButton=0x7f090004;
+        public static final int editGetCurrent_button=0x7f090017;
+        public static final int editLocation=0x7f090015;
+        public static final int editMessage=0x7f09001a;
+        public static final int editMode=0x7f090019;
+        public static final int editName=0x7f090014;
+        public static final int editProvider=0x7f090013;
+        public static final int editRadius=0x7f090016;
+        public static final int editSendText=0x7f090018;
+        public static final int frameLayout1=0x7f09001b;
+        public static final int getCurrent_button=0x7f09000c;
+        public static final int imageView1=0x7f090005;
+        public static final int imageView2=0x7f090008;
+        public static final int imageView3=0x7f09000a;
+        public static final int imageView4=0x7f09000d;
+        public static final int imageView5=0x7f09000e;
+        public static final int imageView6=0x7f090010;
+        public static final int location=0x7f090009;
+        public static final int mainView=0x7f090001;
+        public static final int menu_settings=0x7f09001f;
+        public static final int message=0x7f090012;
+        public static final int mode=0x7f090011;
+        public static final int name=0x7f090007;
+        public static final int onOff=0x7f090000;
+        public static final int radius=0x7f09000b;
+        public static final int sendText=0x7f09000f;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -84,20 +100,21 @@ public final class R {
         public static final int map_activity=0x7f030004;
     }
     public static final class menu {
-        public static final int activity_main=0x7f070000;
+        public static final int actionbar_menu=0x7f080000;
+        public static final int activity_main=0x7f080001;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int authority=0x7f040006;
-        public static final int hello_world=0x7f040001;
-        public static final int menu_settings=0x7f040002;
-        public static final int mode_prompt=0x7f040008;
-        public static final int read_permission=0x7f040004;
-        public static final int test=0x7f040007;
-        public static final int title_activity_main=0x7f040003;
-        public static final int write_permission=0x7f040005;
+        public static final int app_name=0x7f050000;
+        public static final int authority=0x7f050006;
+        public static final int hello_world=0x7f050001;
+        public static final int menu_settings=0x7f050002;
+        public static final int mode_prompt=0x7f050008;
+        public static final int read_permission=0x7f050004;
+        public static final int test=0x7f050007;
+        public static final int title_activity_main=0x7f050003;
+        public static final int write_permission=0x7f050005;
     }
     public static final class style {
-        public static final int AppTheme=0x7f060000;
+        public static final int AppTheme=0x7f070000;
     }
 }
