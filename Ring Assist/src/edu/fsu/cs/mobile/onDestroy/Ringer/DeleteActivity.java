@@ -2,6 +2,7 @@ package edu.fsu.cs.mobile.onDestroy.Ringer;
 
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,7 +51,9 @@ public class DeleteActivity extends ListActivity
     	
         super.onCreate(savedInstanceState);
         
-        
+        ActionBar a = getActionBar();
+    	a.setTitle("Remove Location");
+    	a.setDisplayHomeAsUpEnabled(true); 
         //populates the listView with items to be deleted
         adapter=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,

@@ -2,6 +2,7 @@ package edu.fsu.cs.mobile.onDestroy.Ringer;
 
 import java.util.Calendar;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -68,6 +69,11 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+       
+        ActionBar a = getActionBar();
+    	a.setTitle("Edit Location");
+    	a.setDisplayHomeAsUpEnabled(true);
+        
         setContentView(R.layout.edit);          //loads the edit.xml
 
         //get the id's from edit.xml

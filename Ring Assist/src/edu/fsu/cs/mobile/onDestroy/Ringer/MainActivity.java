@@ -205,16 +205,15 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         setContentView(R.layout.activity_main);         //inflate the main UI (activity_main.xml)
 
         //get id's used with activity_main.xml
-        mAddButton = (ImageButton)findViewById(R.id.addButton);
+      
         mEditButton = (ImageButton)findViewById(R.id.editButton);
-        mDeleteButton = (ImageButton)findViewById(R.id.deleteButton);
+      
         mMainView = (ListView)findViewById(R.id.mainView);
         mOnOff = (ToggleButton)findViewById(R.id.onOff);
 
         //sets the buttons used with activity_main.xml as clickable
-        mAddButton.setOnClickListener(this);
+      
         mEditButton.setOnClickListener(this);
-        mDeleteButton.setOnClickListener(this);
         mOnOff.setOnClickListener(this);
         
 
@@ -354,28 +353,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     //handles what happens when add,edit,or delete buttons clicked
     public void onClick(View v)
     {
-        //handles when the add button is clicked from activity_main.xml
-        if (v == mAddButton)
-        {
-            //launches the AddActivity
-            Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
-            startActivityForResult(myIntent, 500);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-           // startActivity(myIntent);
-           
-        }
-
-        //handles when the delete button is clicked from activity_main.xml
-        if (v == mDeleteButton)
-        {
-            Intent myIntent = new Intent(MainActivity.this, DeleteActivity.class);
-            
-            startActivityForResult(myIntent, 500);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            //startActivity(myIntent);
-           
-        }
 
         //handles when the toggle button is clicked (eventually would enable or disable
         //Ring Assist features (need to revamp this so that when go back from delete, add, edit

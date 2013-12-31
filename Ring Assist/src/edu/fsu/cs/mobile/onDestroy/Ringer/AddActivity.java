@@ -64,8 +64,9 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	
-    	// getActionBar().setDisplayHomeAsUpEnabled(true);
+    	ActionBar a = getActionBar();
+    	a.setTitle("Add Location");
+    	a.setDisplayHomeAsUpEnabled(true);
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.add);
 
