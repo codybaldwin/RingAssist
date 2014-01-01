@@ -249,10 +249,21 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         toggleSetting = settings.getBoolean("toggleValue", false);
         Log.i("toggleSetting is ","" +toggleSetting);
 
+    	notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
         if (toggleSetting == true)
         {
-            mOnOff.setChecked(true);
-        
+            
+        	mOnOff.setChecked(true);
+            notification = new Notification(R.drawable.ic_launcher,
+                    "Ring Assist", System.currentTimeMillis());
+            notification.flags |= Notification.FLAG_NO_CLEAR;
+            Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
+            notification.setLatestEventInfo(this, "Ring Assist",
+                    "Adjusting Ringer For You", activity);
+            notification.number = 1;
+            notificationManager.notify(0, notification);
         }
         else
             mOnOff.setChecked(false);
