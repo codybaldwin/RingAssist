@@ -3,6 +3,9 @@ package edu.fsu.cs.mobile.onDestroy.Ringer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -28,10 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+
+
+
 //main activity that deals with interactions on activity_main.xml
 public class MainActivity extends Activity implements OnClickListener   //did extend Activity
 {
-    //variables used with activity_main.xml
+    
+	//variables used with activity_main.xml
 	long time=0;
     ImageButton mAddButton;
     ImageButton mEditButton;
@@ -245,20 +252,6 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         if (toggleSetting == true)
         {
             mOnOff.setChecked(true);
-            //send an appropriate notification
-            notificationManager = (NotificationManager)
-                    getSystemService(NOTIFICATION_SERVICE);
-            notification = new Notification(R.drawable.ic_launcher,
-                    "Ring Assist", System.currentTimeMillis());
-            notification.flags |= Notification.FLAG_NO_CLEAR;
-           //Intent intent = new Intent();
-            //go to app when notification is touched
-            Intent intent = new Intent(this, MainActivity.class);
-            PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0); 
-            notification.setLatestEventInfo(this, "Ring Assist",
-                    "Adjusting Ringer For You", activity);
-            notification.number += 1;
-            notificationManager.notify(0, notification);
         
         }
         else
@@ -360,20 +353,21 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         //it stays as it was (i.e. either on or off depending on last action)
         if (v == mOnOff)
         {
+        	notificationManager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
             //if after clicking the toggle is on...
             if (mOnOff.isChecked() == true)
             {
                 //send an appropriate notification
-                notificationManager = (NotificationManager)
-                        getSystemService(NOTIFICATION_SERVICE);
+                
                 notification = new Notification(R.drawable.ic_launcher,
                         "Ring Assist", System.currentTimeMillis());
                 notification.flags |= Notification.FLAG_NO_CLEAR;
-                Intent intent = new Intent();
+                Intent intent = new Intent(this, MainActivity.class);
                 PendingIntent activity = PendingIntent.getActivity(this, 0, intent, 0);
                 notification.setLatestEventInfo(this, "Ring Assist",
                         "Adjusting Ringer For You", activity);
-                notification.number += 1;
+                notification.number = 1;
                 notificationManager.notify(0, notification);
             }
             //otherwise if after click it is off...

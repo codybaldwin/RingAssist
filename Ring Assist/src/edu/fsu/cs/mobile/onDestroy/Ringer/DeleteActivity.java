@@ -54,6 +54,7 @@ public class DeleteActivity extends ListActivity
         ActionBar a = getActionBar();
     	a.setTitle("Remove Location");
     	a.setDisplayHomeAsUpEnabled(true); 
+    	//setContentView(R.layout.delete);
         //populates the listView with items to be deleted
         adapter=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
