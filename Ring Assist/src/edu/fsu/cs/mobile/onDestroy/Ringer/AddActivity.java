@@ -130,7 +130,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
 
             //gets the selected value for the spinner
             String spinnerSelection = mModeSpinner.getSelectedItem().toString();
-            int spinnerSelectionInt = 4;
+            int spinnerSelectionInt = 2;
 
             Log.i("spinner is ", spinnerSelection);     //error checking
 
@@ -143,8 +143,6 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
                 spinnerSelectionInt = 2;
             else if ("Loud".equals(spinnerSelection))
                 spinnerSelectionInt = 3;
-            else if ("Loudest".equals(spinnerSelection))
-                spinnerSelectionInt = 4;
 
             Log.i("spinner number is ", " "+spinnerSelectionInt);       //error checking
 

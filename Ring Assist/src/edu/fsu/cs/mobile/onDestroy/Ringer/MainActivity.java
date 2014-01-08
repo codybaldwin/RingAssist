@@ -297,8 +297,6 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                         modePreference = "Normal";
                     else if ("3".equals(modePreference))
                         modePreference = "Loud";
-                    else if ("4".equals(modePreference))
-                        modePreference = "Loudest";
 
                     listItems.add(mCursor.getString(1));    //right now only outputs the name
                 }

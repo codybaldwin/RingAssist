@@ -163,30 +163,20 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     
                         break;
                     case (3):   //  louder
-                        //  sets ringer volume louder without changing vibrate setting
-                    //	aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                    	// for (int i = 1; i <=6; i++)
-                    		aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                             aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    		aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    		aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    	//	aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                       
+                    	aManager.setStreamVolume(2, aManager.getStreamMaxVolume(2), 0);
                     break;
-                    case (4):   //  louder than 3 + vibrate
+                    case (4):   
+                    	//DO NOTHING
+                    	
+                    	//  louder than 3 + vibrate
                         //  sets ringer volume louder twice and sets vibrate setting on
                     
                    // aManager.setRingerMode(AudioManager.VIBRATE_SETTING_ON);    //  depreciated
                     	
                     	//for (int i = 1; i <=8; i++)
-                    	aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                    	aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                    aManager.setRingerMode(AudioManager.ADJUST_RAISE);
-                  //  aManager.setRingerMode(AudioManager.ADJUST_RAISE);
+                    	//aManager.setStreamVolume(2, aManager.getStreamMaxVolume(2), 0);
+                    	
                     break;
                 }
 

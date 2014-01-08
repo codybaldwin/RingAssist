@@ -167,7 +167,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
                 Log.i("preferenceNumber", " " + preferenceNumber);
 
                 mNameET.setText(mCursor.getString(1));
-                mEditModeSpinner.setSelection(preferenceNumber + 1);    //is plus one b/c not zero indexed?
+                mEditModeSpinner.setSelection(preferenceNumber);    //is plus one b/c not zero indexed?
                 mEditSendText.setChecked(sendTextBool);
                 mEditMessageET.setText(mCursor.getString(6));
             }
@@ -191,7 +191,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
 
                 //gets the selected value for the spinner
                 String spinnerSelection = mEditModeSpinner.getSelectedItem().toString();
-                int spinnerSelectionInt = 4;
+                int spinnerSelectionInt = 2;
 
                 Log.i("spinner is ", spinnerSelection);     //error checking
 
@@ -204,8 +204,6 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
                     spinnerSelectionInt = 2;
                 else if ("Loud".equals(spinnerSelection))
                     spinnerSelectionInt = 3;
-                else if ("Loudest".equals(spinnerSelection))
-                    spinnerSelectionInt = 4;
                 sendTextNumber=0;
                 if (mEditSendText.isChecked() == true)
                     sendTextNumber = 1;

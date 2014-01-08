@@ -10,12 +10,10 @@
     <string name="test"></string>
     <string name="mode_prompt">Ring Mode</string> 
     <string-array name="ring_mode_array"> 
-        <item/> 
         <item>Silent</item> 
         <item>Vibrate</item> 
         <item>Normal</item> 
         <item>Loud</item> 
-        <item>Loudest</item> 
         </string-array>
     <string-array name="list">
         <item>Bar      1.0    Loud</item>
