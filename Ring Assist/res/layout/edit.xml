@@ -37,7 +37,7 @@
         android:layout_toRightOf="@+id/imageView1"
         android:ems="10"
         android:inputType="text|textCapWords"
-        android:maxLength="10"
+        android:maxLength="20"
         android:maxLines="1" >
 
         <requestFocus />
