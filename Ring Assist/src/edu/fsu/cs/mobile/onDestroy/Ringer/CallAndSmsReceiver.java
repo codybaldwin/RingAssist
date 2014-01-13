@@ -92,7 +92,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             
             
-            lManager.requestLocationUpdates(100, 0, criteria, lListener, looper);
+            lManager.requestLocationUpdates(0, 0, criteria, lListener, looper);
 			//update location until semi-accurate
             userLocation=lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER);
            

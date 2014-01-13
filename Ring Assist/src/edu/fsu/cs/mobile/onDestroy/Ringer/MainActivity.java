@@ -244,9 +244,16 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                
             }
         });
-
+        LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         settings = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
         toggleSetting = settings.getBoolean("toggleValue", false);
+        //if location services are not enabled, don't allow the toggle button to be true!
+        if(toggleSetting && lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER)==null)
+        	{
+        	toggleSetting=false;
+        	Toast.makeText(this, "Turn on Location Services", Toast.LENGTH_LONG).show();
+        	}
+        
         Log.i("toggleSetting is ","" +toggleSetting);
 
     	notificationManager = (NotificationManager)
@@ -264,7 +271,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                     "Adjusting Ringer For You", activity);
             notification.number = 1;
             notificationManager.notify(0, notification);
-            LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+           
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             //  update location based on the Network Provider every 5 mins
@@ -388,7 +395,15 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             //if after clicking the toggle is on...
             if (mOnOff.isChecked() == true)
             {
-                //send an appropriate notification
+            	//if location services are off, don't allow toggle button to be on!
+               if(lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER)==null)
+               {
+            	   mOnOff.setChecked(false);
+            	   Toast.makeText(this, "Turn on Location Services", Toast.LENGTH_LONG).show();
+            	   return;
+               }
+               
+            	//send an appropriate notification
                 
                 notification = new Notification(R.drawable.ic_launcher,
                         "Ring Assist", System.currentTimeMillis());
