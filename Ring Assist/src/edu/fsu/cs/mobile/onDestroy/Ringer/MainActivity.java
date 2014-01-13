@@ -14,6 +14,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -238,10 +242,6 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 //startActivity(myIntent);
                
-
-              /*  Toast.makeText(getApplicationContext(),     //simply for error checking
-                        ((TextView) view).getText(),
-                        Toast.LENGTH_SHORT).show(); */
             }
         });
 
@@ -264,6 +264,11 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                     "Adjusting Ringer For You", activity);
             notification.number = 1;
             notificationManager.notify(0, notification);
+            LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            //  update location based on the Network Provider every 5 mins
+            lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 5*60*1000, 20, CallAndSmsReceiver.lListener);
         }
         else
             mOnOff.setChecked(false);
@@ -362,6 +367,22 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         //it stays as it was (i.e. either on or off depending on last action)
         if (v == mOnOff)
         {
+        	LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            /*LocationListener lListener = new LocationListener()
+            {
+                //@Override
+                //@Override
+                public void onLocationChanged(Location location) {Log.i("Location Update", "success");}
+                //@Override
+                //@Override
+                public void onProviderDisabled(String provider) {}
+                //@Override
+                //@Override
+                public void onProviderEnabled(String provider) {}
+                //@Override
+                //@Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+            }; */
         	notificationManager = (NotificationManager)
                     getSystemService(NOTIFICATION_SERVICE);
             //if after clicking the toggle is on...
@@ -378,11 +399,21 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                         "Adjusting Ringer For You", activity);
                 notification.number = 1;
                 notificationManager.notify(0, notification);
+               
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                //  update location based on the best provider
+                lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 5*60*1000, 20, CallAndSmsReceiver.lListener); //update location every 5 mins in bg
+               
+              
+             
+                
             }
             //otherwise if after click it is off...
             else
             {
                 notificationManager.cancel(0);
+              //  lManager.removeUpdates(CallAndSmsReceiver.lListener);
             }
 
             //save the toggle value to shared preferences (right way might be in saved bookmark)

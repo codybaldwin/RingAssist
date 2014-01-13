@@ -85,8 +85,8 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         //here initially finds the location of the user but does not actually set any variables
         //used in the content provider until button is clicked
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
+        Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(location != null) //&& location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
         {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
@@ -99,7 +99,13 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
             //calls function below if last known location is null
         	 mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         	 if(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)==null)
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        	 {
+        		 Toast.makeText(getApplicationContext(),"Location Unavailable!", Toast.LENGTH_LONG).show(); 
+        		 Intent myIntent = new Intent(AddActivity.this, MainActivity.class);
+                 startActivityForResult(myIntent, 500);
+                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                 finish();
+        	 }
         }
 
         //sets the longitude and latitude to whatever is most current

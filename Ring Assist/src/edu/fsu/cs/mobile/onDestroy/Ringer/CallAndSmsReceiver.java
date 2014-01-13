@@ -1,5 +1,9 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,20 +30,46 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+
 //Note...commented out the @Overrides to compile
 
 public class CallAndSmsReceiver extends BroadcastReceiver
 {
-    //  arbitrarily setting radius until able to get it from activity or decided upon by group
+    
+	// A request to connect to Location Services
+//  arbitrarily setting radius until able to get it from activity or decided upon by group
     final static double RADIUSINFEET = 200;
     final static double RADIUS = RADIUSINFEET / (60 * 5280 * 1.15); //  in degrees latitude/longitude
     final static int RING_CHANGED_NOTIFICATION_ID = 10;
     public final static String PREFS_NAME = "TogglePrefFile";
     public boolean sent = false;
+    //constructor requires provider, but it will be replaced by locationManager
+    public static Location userLocation= new Location("dummyProvider");
+    
+   public static LocationListener lListener = new LocationListener()
+    {
+        public void onLocationChanged(Location location) 
+        {
+            //only replace the location if the accuracy is within 200ft
+        	if (location.getAccuracy()< 200)
+        		{
+        			userLocation=location;
+        			//Toast.makeText(null, "Location Updated!", Toast.LENGTH_LONG).show();
+                }
+        
+        }
+        	
+
+        public void onProviderDisabled(String provider) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
     Cursor cursor;
     
     
-
+    
     @Override
     public void onReceive(final Context context, Intent intent)
     {
@@ -50,37 +80,30 @@ public class CallAndSmsReceiver extends BroadcastReceiver
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
         boolean toggleSetting = settings.getBoolean("toggleValue", false);
         Log.i("toggleSetting is ", "" + toggleSetting);
-
+        
         if (toggleSetting)
         {
-            //  getting user's location
+        	//set really high
+        	userLocation.setAccuracy(999999);
             LocationManager lManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            LocationListener lListener = new LocationListener()
-            {
-                //@Override
-                //@Override
-                public void onLocationChanged(Location location) {}
-                //@Override
-                //@Override
-                public void onProviderDisabled(String provider) {}
-                //@Override
-                //@Override
-                public void onProviderEnabled(String provider) {}
-                //@Override
-                //@Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
-            };
             Looper looper = Looper.getMainLooper();
             Criteria criteria = new Criteria();
+            
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            //  checking location based on network first, then GPS if network doesn't work
-            lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, lListener);
-            Location userLocation = lManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (userLocation == null)
-            {
-            lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, lListener);
-            userLocation = lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
+            
+            
+            lManager.requestLocationUpdates(100, 0, criteria, lListener, looper);
+			//update location until semi-accurate
+            userLocation=lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER);
+           
+            /*
+             	if(userLocation==null || userLocation.getAccuracy()>200)
+            		userLocation=lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER);
+            */
+           
+            Log.i("Accuracy being used:", ""+userLocation.getAccuracy());
+            lManager.removeUpdates(lListener);
+            	
             //  checking the database for a location that matches the user's location
 
             Log.i("longitude is ", " " +userLocation.getLongitude());
@@ -174,7 +197,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     
                    // aManager.setRingerMode(AudioManager.VIBRATE_SETTING_ON);    //  depreciated
                     	
-                    	//for (int i = 1; i <=8; i++)
+                    	//for (inter i = 1; i <=8; i++)
                     	//aManager.setStreamVolume(2, aManager.getStreamMaxVolume(2), 0);
                     	
                     break;
@@ -337,9 +360,10 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             Log.i("got past", "everything");
 
             //  stop getting location updates so app doesn't eat the battery
-            lManager.removeUpdates(lListener);
+            
         }
     }
+
 
 }
 
