@@ -35,14 +35,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-
-
-
 //main activity that deals with interactions on activity_main.xml
 public class MainActivity extends Activity implements OnClickListener   //did extend Activity
 {
     
 	//variables used with activity_main.xml
+	public GPSTracker gps;
 	long time=0;
     ImageButton mAddButton;
     ImageButton mEditButton;
@@ -58,133 +56,11 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     SharedPreferences settings;
     boolean toggleSetting;
 
-    //here trying to do the map view stuff (for premium)
-    /*MapView map;
-    MapController mc;
-    LocationManager lm;
-    GeoPoint geoPoint;
-    Drawable marker;*/
-
-    /*class MyOverlay extends ItemizedOverlay<OverlayItem>
-    {
-        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
-
-        public MyOverlay(Drawable drawable)
-        {
-            super(drawable);
-
-            boundCenterBottom(drawable);
-
-            //get's the entire UserInformation table into the cursor
-            mCursor = getContentResolver().query(RingAssistProvider.CONTENT_URI,
-                    null, null, null, null);
-
-            //if the cursor isn't empty, then populate listView from database
-            if(mCursor != null)
-            {
-                if(mCursor.getCount() > 0)
-                {
-                    //mCursor.moveToNext();
-
-                    while (mCursor.moveToNext())
-                    {
-                        String modePreference = mCursor.getString(5).trim();
-
-                        if ("0".equals(modePreference))
-                            modePreference = "Silent";
-                        else if ("1".equals(modePreference))
-                            modePreference = "Vibrate";
-                        else if ("2".equals(modePreference))
-                            modePreference = "Normal";
-                        else if ("3".equals(modePreference))
-                            modePreference = "Loud";
-                        else if ("4".equals(modePreference))
-                            modePreference = "Loudest";
-
-                        //listItems.add(mCursor.getString(1));    //right now only outputs the name
-
-                        items.add(new OverlayItem(new GeoPoint((int) (mCursor.getInt(3) * 1E6),
-                                (int) (mCursor.getInt(2) * 1E6)),
-                                mCursor.getString(1), modePreference));
-                    }
-                }
-
-                //items.add(new OverlayItem(geoPoint, "Hello", "Welcome to the Mobile Lab!"));
-                //items.add(new OverlayItem(new GeoPoint((int) (30.446172 * 1E6),
-                        //(int) (-84.299466 * 1E6)),
-                        //"You're late", "You're late, Class starts at 2PM!"));
-
-                populate();
-            }
-        }
-
-        @Override
-        protected OverlayItem createItem(int index)
-        {
-            return items.get(index);
-        }
-
-        @Override
-        protected boolean onTap(int i)
-        {
-            Toast.makeText(MainActivity.this,
-                    items.get(i).getSnippet(),
-                    Toast.LENGTH_SHORT).show();
-            return(true);
-        }
-
-        @Override
-        public int size()
-        {
-            return items.size();
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        //map = (MapView) findViewById(R.id.mapView);
-        //mc = map.getController();
-
-
-
-        map.setBuiltInZoomControls(true);
-
-        geoPoint = new GeoPoint((int) (30.446142 * 1E6), (int) (-84.299673 * 1E6));
-        mc.setCenter(geoPoint);
-
-        marker = getResources().getDrawable(R.drawable.ic_launcher);
-        marker.setBounds(105, 105, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
-
-        mc.setZoom(17);
-
-        map.getOverlays().add(new MyOverlay(marker));
-    }
-
-    @Override
-    protected boolean isRouteDisplayed()
-    {
-        return false;
-    }*/
-
     public void onBackPressed()
     {
 		if(System.currentTimeMillis()-time<=4000)
 		{
 			moveTaskToBack(true);
-			
-			/*Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish(); */
-            
-
         }
         else
         {
@@ -198,8 +74,12 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    	 gps = new GPSTracker(MainActivity.this);
         //force actionBar Menu overflow
-
+    	//startService(new Intent(this, GPSTracker.class));
+    	//Intent startIntent = new Intent(getApplicationContext(),GPSTracker.class);
+    //	startService(startIntent);
+    	
     	     try {
     	        ViewConfiguration config = ViewConfiguration.get(this);
     	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
@@ -275,7 +155,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             //  update location based on the Network Provider every 5 mins
-            lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 5*60*1000, 20, CallAndSmsReceiver.lListener);
+            lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 2*60*1000, 20, CallAndSmsReceiver.lListener);
         }
         else
             mOnOff.setChecked(false);
@@ -319,6 +199,14 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         }
     }
 
+    @Override
+    protected void onDestroy()
+    {
+    	//stopService(new Intent(this, GPSTracker.class));
+
+    	//Intent stopIntent = new Intent(getApplicationContext(),GPSTracker.class);
+    	//stopService(stopIntent);
+    }
     
     //overriding simply for the shared preferences to be able to store just in case (not sure if
     //need this since also save the shared preferences every time they change it)

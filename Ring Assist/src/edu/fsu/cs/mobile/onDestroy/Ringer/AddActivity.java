@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -23,7 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 //reads in the user information and stores into database, at end calls mainActivity again
-public class AddActivity extends Activity implements OnClickListener, LocationListener
+public class AddActivity extends Activity implements OnClickListener /*, LocationListener */
 {
     //variables used from add.xml
     EditText mNameET;
@@ -32,8 +33,6 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
     ImageButton mGetCurrentButton;
     CheckBox mSendText;
     EditText mMessageET;
-    static double longitude;
-    static double latitude;
     static double providerLatitude;
     static double providerLongitude;
     LocationManager mLocationManager;
@@ -82,11 +81,18 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         mAddToProvider.setOnClickListener(this);
         mGetCurrentButton.setOnClickListener(this);
 
-        //here initially finds the location of the user but does not actually set any variables
+      /*  //here initially finds the location of the user but does not actually set any variables
         //used in the content provider until button is clicked
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if(location != null) //&& location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        
+      //  mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(criteria, true), 0, 0, this);
+        Location location;
+      
+        	location = mLocationManager.getLastKnownLocation(mLocationManager.NETWORK_PROVIDER);
+        Log.i("Accuracy is", location.getAccuracy()+"");
+        if(location != null && location.getAccuracy()!= 0 && location.getAccuracy()<200) //&& location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
         {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
@@ -96,6 +102,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         }
         else
         {
+        	
             //calls function below if last known location is null
         	 mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         	 if(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)==null)
@@ -109,13 +116,14 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
         }
 
         //sets the longitude and latitude to whatever is most current
+         */
         mGetCurrentButton.setOnClickListener(new View.OnClickListener()
         {
             //@Override
             public void onClick(View v)
             {
-                providerLatitude = latitude;
-                providerLongitude = longitude;
+                providerLatitude = Globals.latitude;
+                providerLongitude = Globals.longitude;
 
                 Log.i("in click latitude ","" + providerLatitude);
                 Log.i("in click longitude ", "" + providerLongitude);
@@ -123,7 +131,7 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
                 Toast.makeText(getApplicationContext(),"lat is " + providerLatitude +
                         " long is " + providerLongitude, Toast.LENGTH_SHORT).show();
             }
-        });
+        }); 
     }
 
     public void onClick(View v)
@@ -181,15 +189,15 @@ public class AddActivity extends Activity implements OnClickListener, LocationLi
     //finds the user's location if the last known location is null (uses gps, so maybe only works outdoors)
     public void onLocationChanged(Location location)
     {
-        if (location != null)
+      /*  if (location != null && location.getAccuracy()<200)
         {
             longitude = location.getLongitude();
             latitude = location.getLatitude();
 
             Log.v("Location Changed", latitude + " and " + longitude);
 
-            mLocationManager.removeUpdates(this);
-        }
+          //  mLocationManager.removeUpdates(this);
+        } */
     }
 
     //required functions, don't need definitions for our application Required functions

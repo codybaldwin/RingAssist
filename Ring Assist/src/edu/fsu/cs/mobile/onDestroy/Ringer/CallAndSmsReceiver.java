@@ -38,7 +38,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
     
 	// A request to connect to Location Services
 //  arbitrarily setting radius until able to get it from activity or decided upon by group
-    final static double RADIUSINFEET = 200;
+    final static double RADIUSINFEET = 300;
     final static double RADIUS = RADIUSINFEET / (60 * 5280 * 1.15); //  in degrees latitude/longitude
     final static int RING_CHANGED_NOTIFICATION_ID = 10;
     public final static String PREFS_NAME = "TogglePrefFile";
@@ -51,11 +51,13 @@ public class CallAndSmsReceiver extends BroadcastReceiver
         public void onLocationChanged(Location location) 
         {
             //only replace the location if the accuracy is within 200ft
-        	if (location.getAccuracy()< 200)
+        	if (location.getAccuracy()< 200 && location.getAccuracy()!=0)
         		{
         			userLocation=location;
         			//Toast.makeText(null, "Location Updated!", Toast.LENGTH_LONG).show();
+        			
                 }
+        	
         
         }
         	
@@ -83,7 +85,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
         
         if (toggleSetting)
         {
-        	//set really high
+        	/*//set really high
         	userLocation.setAccuracy(999999);
             LocationManager lManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Looper looper = Looper.getMainLooper();
@@ -96,10 +98,10 @@ public class CallAndSmsReceiver extends BroadcastReceiver
 			//update location until semi-accurate
             userLocation=lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER);
            
-            /*
-             	if(userLocation==null || userLocation.getAccuracy()>200)
-            		userLocation=lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER);
-            */
+            //test, may take too long
+      //       	if(userLocation==null || userLocation.getAccuracy()>200)
+        //    		userLocation=lManager.getLastKnownLocation(lManager.GPS_PROVIDER);
+            
            
             Log.i("Accuracy being used:", ""+userLocation.getAccuracy());
             lManager.removeUpdates(lListener);
@@ -122,10 +124,10 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     RingAssistProvider.COLUMN_LATITUDE + " < ? ";
             String[] selectionArgs = new String[]
                     {
-                    (Double.toString(longitude - RADIUS)),
-                    (Double.toString(longitude + RADIUS)),
-                    (Double.toString(latitude - RADIUS)),
-                    (Double.toString(latitude + RADIUS))
+                    (Double.toString(Globals.longitude - RADIUS)),
+                    (Double.toString(Globals.longitude + RADIUS)),
+                    (Double.toString(Globals.latitude - RADIUS)),
+                    (Double.toString(Globals.latitude + RADIUS))
                     };
 
             /*String[] selectionArgs = new String[]
@@ -171,7 +173,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                 switch (userPreference)
                 {
                     case (0):   //  silent
-                        //  changes ringer volume to silent and not vibrate
+                        //  changes ringer volume to silent and not vibrat
                         aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                     break;
                     case (1):   //  vibrate
@@ -276,7 +278,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                     if (tManager.getCallState() == TelephonyManager.CALL_STATE_RINGING)
                     {
                     	//Log.i("stopped ringing", "call state is idle");
-                    	
+                 
                     //  getting phone number from incoming call
                         //  needs a delay because call log is not updated immediately when call is received
                         //  so we delay half a second (aka 500 milliseconds)
@@ -355,7 +357,10 @@ public class CallAndSmsReceiver extends BroadcastReceiver
                 
             }
             else
-                Toast.makeText(context, "Not within radius", Toast.LENGTH_LONG).show();
+            {
+            	Toast.makeText(context, "Not within radius ", Toast.LENGTH_LONG).show();
+            	
+            }
 
             Log.i("got past", "everything");
 
