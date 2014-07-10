@@ -46,7 +46,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
     //constructor requires provider, but it will be replaced by locationManager
     public static Location userLocation= new Location("dummyProvider");
     
-   public static LocationListener lListener = new LocationListener()
+  /* public static LocationListener lListener = new LocationListener()
     {
         public void onLocationChanged(Location location) 
         {
@@ -67,7 +67,8 @@ public class CallAndSmsReceiver extends BroadcastReceiver
         public void onProviderEnabled(String provider) {}
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
-    };
+    }; 
+    */
     Cursor cursor;
     
     

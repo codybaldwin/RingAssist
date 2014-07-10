@@ -155,7 +155,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             //  update location based on the Network Provider every 5 mins
-            lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 2*60*1000, 20, CallAndSmsReceiver.lListener);
+        //    lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 2*60*1000, 20, CallAndSmsReceiver.lListener);
         }
         else
             mOnOff.setChecked(false);
@@ -284,10 +284,10 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             if (mOnOff.isChecked() == true)
             {
             	//if location services are off, don't allow toggle button to be on!
-               if(lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER)==null)
+               if(!gps.canGetLocation())
                {
             	   mOnOff.setChecked(false);
-            	   Toast.makeText(this, "Turn on Location Services", Toast.LENGTH_LONG).show();
+            	   gps.showSettingsAlert();
             	   return;
                }
                
@@ -306,7 +306,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
                 Criteria criteria = new Criteria();
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 //  update location based on the best provider
-                lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 5*60*1000, 20, CallAndSmsReceiver.lListener); //update location every 5 mins in bg
+           //     lManager.requestLocationUpdates(lManager.NETWORK_PROVIDER, 5*60*1000, 20, CallAndSmsReceiver.lListener); //update location every 5 mins in bg
                
               
              

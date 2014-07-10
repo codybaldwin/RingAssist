@@ -120,8 +120,8 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
             //@Override
             public void onClick(View v)
             {
-                providerLatitude = latitude;
-                providerLongitude = longitude;
+                providerLatitude = Globals.latitude;
+                providerLongitude = Globals.longitude;
 
                 Log.i("in click latitude ","" + providerLatitude);
                 Log.i("in click longitude ", "" + providerLongitude);
