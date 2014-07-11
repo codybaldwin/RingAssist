@@ -40,6 +40,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
     LocationManager mLocationManager;
     boolean sendTextBool = false;
     int sendTextNumber = 0;
+    public boolean hasLocation = false;
 
     //animates the activity changes when back button is pressed OR when the "up" button is pressed
     @Override
@@ -87,10 +88,9 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
         //set listener for buttons in add.xml
         mEditProvider.setOnClickListener(this);
         mEditGetCurrentButton.setOnClickListener(this);
-
         //here initially finds the location of the user but does not actually set any variables
         //used in the content provider until button is clicked
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      /*  mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if(location != null) //&& location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000)
         {
@@ -113,7 +113,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
                  finish();
         	 }
         }
-
+*/
         //sets the longitude and latitude to whatever is most current
         mEditGetCurrentButton.setOnClickListener(new View.OnClickListener()
         {
@@ -122,7 +122,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
             {
                 providerLatitude = Globals.latitude;
                 providerLongitude = Globals.longitude;
-
+                hasLocation = true;
                 Log.i("in click latitude ","" + providerLatitude);
                 Log.i("in click longitude ", "" + providerLongitude);
 
@@ -189,7 +189,8 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
         //handles when addToProvider Button clicked
         if (v == mEditProvider)
         {
-            Bundle extras = getIntent().getExtras();
+            
+        	Bundle extras = getIntent().getExtras();
 
             if(extras != null)
             {
@@ -219,8 +220,11 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
 
                 //choose which columns to update and with what information
                 mUpdateValues.put(RingAssistProvider.COLUMN_NAME, mNameET.getText().toString().trim());
-                mUpdateValues.put(RingAssistProvider.COLUMN_LONGITUDE, providerLongitude);
-                mUpdateValues.put(RingAssistProvider.COLUMN_LATITUDE, providerLatitude);
+                if(!hasLocation)
+                {
+                	  mUpdateValues.put(RingAssistProvider.COLUMN_LONGITUDE, providerLongitude);
+                      mUpdateValues.put(RingAssistProvider.COLUMN_LATITUDE, providerLatitude);
+                }
                 mUpdateValues.put(RingAssistProvider.COLUMN_PREFERENCE, spinnerSelectionInt);
                 mUpdateValues.put(RingAssistProvider.COLUMN_SENDTEXT, sendTextNumber);
                 mUpdateValues.put(RingAssistProvider.COLUMN_MESSAGE, mEditMessageET.getText().toString().trim());

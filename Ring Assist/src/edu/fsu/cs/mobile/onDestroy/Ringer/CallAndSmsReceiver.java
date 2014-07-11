@@ -156,7 +156,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             {
                 Log.i("cursor is not", "NULL");
 
-                Toast.makeText(context, "Within radius", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Within radius of "+cursor.getString(1), Toast.LENGTH_LONG).show();
 
                 AudioManager aManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 Log.i("got past audioManager", " ");

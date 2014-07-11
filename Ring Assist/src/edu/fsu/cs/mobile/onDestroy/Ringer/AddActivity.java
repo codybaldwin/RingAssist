@@ -36,6 +36,7 @@ public class AddActivity extends Activity implements OnClickListener /*, Locatio
     static double providerLatitude;
     static double providerLongitude;
     LocationManager mLocationManager;
+    public boolean hasLocation = false;
   
     //animates the activity changes when back button is pressed OR when the "up" button is pressed
     @Override
@@ -68,6 +69,7 @@ public class AddActivity extends Activity implements OnClickListener /*, Locatio
     	a.setDisplayHomeAsUpEnabled(true);
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.add);
+       
 
         //get id's of add.xml
         mNameET = (EditText)findViewById(R.id.name);
@@ -124,7 +126,7 @@ public class AddActivity extends Activity implements OnClickListener /*, Locatio
             {
                 providerLatitude = Globals.latitude;
                 providerLongitude = Globals.longitude;
-
+                hasLocation = true;
                 Log.i("in click latitude ","" + providerLatitude);
                 Log.i("in click longitude ", "" + providerLongitude);
 
@@ -139,7 +141,12 @@ public class AddActivity extends Activity implements OnClickListener /*, Locatio
         //handles when addToProvider Button clicked
         if (v == mAddToProvider)
         {
-            //try to get current location in order to get longitude and latitude
+            if(!hasLocation)
+            {
+            	Toast.makeText(getApplicationContext(),"You must Get Location before adding!", Toast.LENGTH_SHORT).show();
+            	return;
+            }
+        	//try to get current location in order to get longitude and latitude
             //should work fine once have button (can't do in onCreate())
 
             //gets the selected value for the spinner
