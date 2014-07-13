@@ -4,10 +4,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -16,6 +18,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +47,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     ImageButton mDeleteButton;
     Cursor mCursor;
     ListView mMainView;
-    ToggleButton mOnOff;
+    public static ToggleButton mOnOff;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     NotificationManager notificationManager;
@@ -66,12 +69,11 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         }
         
     } 
-    
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	 gps = GPSTracker.Instance(getApplicationContext());
+    	 gps = GPSTracker.Instance(MainActivity.this);
         //force actionBar Menu overflow
     	//startService(new Intent(this, GPSTracker.class));
     	//Intent startIntent = new Intent(getApplicationContext(),GPSTracker.class);
@@ -123,18 +125,18 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
         });
         LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         settings = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+    	notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
         toggleSetting = settings.getBoolean("toggleValue", false);
         //if location services are not enabled, don't allow the toggle button to be true!
         if(toggleSetting && lManager.getLastKnownLocation(lManager.NETWORK_PROVIDER)==null)
         	{
         	toggleSetting=false;
+        	notificationManager.cancel(0);
         	Toast.makeText(this, "Turn on Location Services", Toast.LENGTH_LONG).show();
         	}
         
         Log.i("toggleSetting is ","" +toggleSetting);
-
-    	notificationManager = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
         if (toggleSetting == true)
         {
             
@@ -281,10 +283,12 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
             if (mOnOff.isChecked() == true)
             {
             	//if location services are off, don't allow toggle button to be on!
-               if(!gps.canGetLocation())
+            	gps.getLocation();
+               if(!gps.canGetLocation)
                {
             	   mOnOff.setChecked(false);
-            	   gps.showSettingsAlert();
+            		   gps.showSettingsAlert();
+            		   notificationManager.cancel(0);
             	   return;
                }
                

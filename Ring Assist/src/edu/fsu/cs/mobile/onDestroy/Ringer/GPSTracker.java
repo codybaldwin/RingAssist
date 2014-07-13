@@ -1,6 +1,7 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -76,6 +77,7 @@ public class GPSTracker extends Service implements LocationListener {
 
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
+				canGetLocation=false;
 			} else {
 				this.canGetLocation = true;
 				if (isNetworkEnabled) {
@@ -167,6 +169,7 @@ public class GPSTracker extends Service implements LocationListener {
 	 * On pressing Settings button will lauch Settings Options
 	 * */
 	public void showSettingsAlert(){
+		
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
    	 
         // Setting Dialog Title
