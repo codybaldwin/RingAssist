@@ -17,7 +17,14 @@ import android.widget.Toast;
 public class GPSTracker extends Service implements LocationListener {
 
 	private final Context mContext;
-
+	private static GPSTracker instance = null;
+	
+	public static GPSTracker Instance(Context context)
+	{
+		if(instance==null)
+			instance = new GPSTracker(context);
+		return instance;
+	}
 	// flag for GPS status
 	boolean isGPSEnabled = false;
 
@@ -47,7 +54,13 @@ public class GPSTracker extends Service implements LocationListener {
 	 public GPSTracker() {
 		 mContext=this;
 	 }
-		       
+		 
+	@Override
+	public void onCreate()
+	{
+		Toast.makeText(getApplicationContext(),"Starting GPS Tracker", Toast.LENGTH_SHORT).show();
+		
+	}
 	public Location getLocation() {
 		try {
 			locationManager = (LocationManager) mContext

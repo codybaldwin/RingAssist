@@ -1,8 +1,6 @@
 package edu.fsu.cs.mobile.onDestroy.Ringer;
 
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationRequest;
+
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -359,7 +357,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             }
             else
             {
-            	Toast.makeText(context, "Not within radius ", Toast.LENGTH_LONG).show();
+            	Toast.makeText(context, "Not within radius Lat:"+Globals.latitude+" Lon:"+Globals.longitude, Toast.LENGTH_LONG).show();
             	
             }
 

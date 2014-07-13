@@ -3,9 +3,6 @@ package edu.fsu.cs.mobile.onDestroy.Ringer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -74,7 +71,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	 gps = new GPSTracker(MainActivity.this);
+    	 gps = GPSTracker.Instance(getApplicationContext());
         //force actionBar Menu overflow
     	//startService(new Intent(this, GPSTracker.class));
     	//Intent startIntent = new Intent(getApplicationContext(),GPSTracker.class);
