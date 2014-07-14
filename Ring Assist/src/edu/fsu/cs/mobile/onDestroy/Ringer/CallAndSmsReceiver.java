@@ -74,7 +74,8 @@ public class CallAndSmsReceiver extends BroadcastReceiver
     @Override
     public void onReceive(final Context context, Intent intent)
     {
-        Log.i("just got inside ", " onReceive()");
+        MainActivity.gps = GPSTracker.Instance(context);
+    	Log.i("just got inside ", " onReceive()");
 
        // Toast.makeText(context, "entered on receive", Toast.LENGTH_LONG).show();
 

@@ -40,7 +40,7 @@ public class MainActivity extends Activity implements OnClickListener   //did ex
 {
     
 	//variables used with activity_main.xml
-	public GPSTracker gps;
+	public static GPSTracker gps;
 	long time=0;
     ImageButton mAddButton;
     ImageButton mEditButton;
