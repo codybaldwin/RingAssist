@@ -358,7 +358,7 @@ public class CallAndSmsReceiver extends BroadcastReceiver
             }
             else
             {
-            	Toast.makeText(context, "Not within radius Lat:"+Globals.latitude+" Lon:"+Globals.longitude, Toast.LENGTH_LONG).show();
+            	Toast.makeText(context, "Not within radius Lat:"+Globals.latitude+" Lon:"+Globals.longitude + " with Acc:"+Globals.accuracy, Toast.LENGTH_LONG).show();
             	
             }
 

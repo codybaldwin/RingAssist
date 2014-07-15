@@ -127,7 +127,7 @@ public class EditActivity extends Activity implements OnClickListener, LocationL
                 Log.i("in click longitude ", "" + providerLongitude);
 
                 Toast.makeText(getApplicationContext(),"lat is " + providerLatitude +
-                        " long is " + providerLongitude, Toast.LENGTH_SHORT).show();
+                        " long is " + providerLongitude+ " with accuracy "+Globals.accuracy, Toast.LENGTH_SHORT).show();
             }
         });
 

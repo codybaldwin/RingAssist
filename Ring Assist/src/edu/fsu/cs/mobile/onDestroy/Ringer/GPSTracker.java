@@ -92,6 +92,7 @@ public class GPSTracker extends Service implements LocationListener {
 						if (location != null) {
 							Globals.latitude = location.getLatitude();
 							Globals.longitude = location.getLongitude();
+							Globals.accuracy = location.getAccuracy();
 						}
 					}
 				}
@@ -109,6 +110,7 @@ public class GPSTracker extends Service implements LocationListener {
 							if (location != null) {
 								Globals.latitude = location.getLatitude();
 								Globals.longitude = location.getLongitude();
+								Globals.accuracy = location.getAccuracy();
 							}
 						}
 					}
@@ -203,6 +205,7 @@ public class GPSTracker extends Service implements LocationListener {
 		{
 			Globals.latitude = location.getLatitude();
 			Globals.longitude = location.getLongitude();
+			Globals.accuracy = location.getAccuracy();
 		}
 	}
 
